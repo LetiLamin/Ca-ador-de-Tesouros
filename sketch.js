@@ -8,6 +8,7 @@ var JOGAR=1;
 var ENCERRAR=0;
 var estadoJogo=1;
 
+
 function preload(){
   imgCaminho = loadImage("Road.png");
   imgMenino = loadAnimation("Runner-1.png","Runner-2.png");
@@ -45,54 +46,57 @@ function draw() {
   if(estadoJogo===JOGAR){
   background(0);
   menino.x = World.mouseX;
+  //console.log('menino.x  %s',menino.x );
   
   edges= createEdgeSprites();
   menino.collide(edges);
-  
+
   //código para resetar o plano de fundo
-  if(caminho.y > 400 ){
+  if(caminho.y > height ){
     caminho.y = height/2;
   }
   
-    criarDinheiro();
-    criarDiamantes();
-    criarJoias();
-    criarEspadas();
+  criarDinheiro();
+  criarDiamantes();
+  criarJoias();
+  criarEspadas();
 
-    if (dinheiroG.isTouching(menino)) {
-      dinheiroG.destroyEach();
-      colecaoTesouros=colecaoTesouros+50;
-    }
-    if (diamantesG.isTouching(menino)){
-      diamantesG.destroyEach();
-      colecaoTesouros = colecaoTesouros+100;
-    }
-    if (joiasG.isTouching(menino)){
-      joiasG.destroyEach();
-      colecaoTesouros = colecaoTesouros+150;
-    }
-    else if (diamantesG.isTouching(menino)) {
-      diamantesG.destroyEach();
+  //console.log('dinheiro %s', dinheiroG.dinheiro);
 
-      
-    }else if(joiasG.isTouching(menino)) {
-      joiasG.destroyEach();
-
-      
-    }else{
+  if (dinheiroG.isTouching(menino)) {
+     dinheiroG.destroyEach();
+    //console;log('dinheiro %s', dinheiro);
+    colecaoTesouros=colecaoTesouros+50;
+   
+  }
+  if (diamantesG.isTouching(menino)){
+    diamantesG.destroyEach();
+    colecaoTesouros = colecaoTesouros+100;
+  }
+  if (joiasG.isTouching(menino)){
+    joiasG.destroyEach();
+    colecaoTesouros = colecaoTesouros+150
+    console.log(colecaoTesouros);
+  }
+  else if (diamantesG.isTouching(menino)) {
+    diamantesG.destroyEach();
+  }
+  else if(joiasG.isTouching(menino)) {
+    joiasG.destroyEach();  
+  }
+  else{
       if(grupoEspada.isTouching(menino)) {
         estadoJogo = ENCERRAR;
         
         menino.addAnimation("SahilRunning", imgFim);
-        menino.x = 200;
-        menino.y = 300;
-        menino.scale = 0.6;
+        menino.x = width/2;
+        menino.y = height/2-75;
+        menino.scale = 1;
         
         dinheiroG.destroyEach();
         diamantesG.destroyEach();
         joiasG.destroyEach();
         grupoEspada.destroyEach();
-    }
   }
   
   drawSprites();
@@ -102,6 +106,7 @@ function draw() {
   }
 
 }
+}
 
 function criarDinheiro() {
   if (World.frameCount % 200 == 0) {
@@ -109,7 +114,7 @@ function criarDinheiro() {
   dinheiro.addImage(imgDinheiro);
   dinheiro.scale=0.12;
   dinheiro.velocityY = 3;
-  dinheiro.lifetime = 150;
+  dinheiro.lifetime = window.screen.height;
   dinheiroG.add(dinheiro);
   }
 }
@@ -120,7 +125,7 @@ function criarDiamantes() {
   diamantes.addImage(imgDiamantes);
   diamantes.scale=0.03;
   diamantes.velocityY = 3;
-  diamantes.lifetime = 150;
+  diamantes.lifetime = window.screen.height;
   diamantesG.add(diamantes);
 }
 }
@@ -131,18 +136,18 @@ function criarJoias() {
   joias.addImage(imgJoias);
   joias.scale=0.13;
   joias.velocityY = 3;
-  joias.lifetime = 150;
+  joias.lifetime = window.screen.height;
   joiasG.add(joias);
   }
 }
 
 function criarEspadas(){
   if (World.frameCount % 530 == 0) {
-  var espada = createSprite(Math.round(random(50, width-50),40, 10, 10));
-  espada.addImage(imgEspada);
-  espada.scale=0.1;
-  espada.velocityY = 3;
-  espada.lifetime = 150;
-  grupoEspada.add(espada);
+    var espada = createSprite(Math.round(random(50, width-50),40, 10, 10));
+    espada.addImage(imgEspada);
+    espada.scale=0.1;
+    espada.velocityY = 3;
+    espada.lifetime = window.screen.height;
+    grupoEspada.add(espada);
   }
 }
